@@ -31,7 +31,7 @@ exports.login = async (req, res, next) => {
       return next(new AppError("Email is incorrect!", 401));
     }
 
-    if (!(await user.comparePassword(user.password,password))) {
+    if (!(await user.comparePassword(password, user.password))) {
       return next(new AppError("Password is incorrect!", 401));
     }
 
@@ -40,25 +40,6 @@ exports.login = async (req, res, next) => {
     res.status(200).json({
       success: true,
       token: token,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.forgotPassword = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      next(new AppError("Email is Incorrect!", 404));
-    }
-
-    const resetToken = user.createPasswordResetToken();
-    await user.save({ validateBeforeSave: false });
-    res.status(200).json({
-      success: true,
-      passwordResetToken: resetToken,
     });
   } catch (error) {
     next(error);
