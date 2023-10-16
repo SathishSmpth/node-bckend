@@ -8,10 +8,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Email is required!"],
     unique: true,
+    lowercase: true,
     validate: [validator.isEmail, "Please enter a valid email!"],
   },
   username: {
     type: String,
+    lowercase: true,
     required: [true, "Username is required!"],
     unique: true,
   },
