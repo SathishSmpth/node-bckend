@@ -7,7 +7,6 @@ exports.upload_single_file = async (req, res, next) => {
   try {
     const s3Client = s3.s3Client;
     const params = s3.uploadParams;
-
     if (!req.file) {
       return res.status(400).json({ error: true, Message: "No file uploaded" });
     }
@@ -63,11 +62,18 @@ exports.delete_file = async (req, res) => {
       Key: req.params.key,
     };
     s3.s3Client.deleteObject(params, function (err, data) {
-      if (data) console.log("Remove image from bucket.", data);
-      else console.log("Something is wrong !");
+      if (data) {
+        res
+          .status(204)
+          .json({ success: false, message: "Remove image from bucket." });
+      } else {
+        res
+          .status(500)
+          .json({ success: false, message: "Something is went wrong!" });
+      }
     });
-    res.status(200).send({ success: true, msg: "File deleted successfully." });
+    res.status(200).json({ success: true, msg: "File deleted successfully." });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).json({ success: false, msg: err.message });
   }
 };

@@ -12,7 +12,7 @@ exports.isAuth = async (req, res, next) => {
       const token = req.headers.authorization.split(" ")[1];
       const decoded = await promisify(jwt.verify)(
         token,
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET_KEY
       );
       const user = await User.findById(decoded.id);
 
@@ -24,7 +24,7 @@ exports.isAuth = async (req, res, next) => {
       if (user.passwordChanged(decoded.iat)) {
         return next(
           new AppError(
-            "You are changed your password recently logtin again!",
+            "You are changed your password recently login again!",
             401
           )
         );

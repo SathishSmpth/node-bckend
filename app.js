@@ -10,7 +10,6 @@ const { swaggerUi, swaggerSpec } = require("./config/swagger.config.js");
 
 const app = express();
 
-app.use(logger("dev"));  
 app.use(express.json());    
 app.use(cors());    
 
